@@ -2,10 +2,7 @@ import React from 'react';
 
 import CustomButton from './CustomButton';
 
-const AiPicker = ({ prompt, setPrompt, generatingImg, handleSubmit }) => {
-	const handleApiError = (errorMessage) => {
-		alert(errorMessage);
-	};
+const AIPicker = ({ prompt, setPrompt, generatingImg, handleSubmit }) => {
 	return (
 		<div className="aipicker-container">
 			<textarea
@@ -27,14 +24,14 @@ const AiPicker = ({ prompt, setPrompt, generatingImg, handleSubmit }) => {
 						<CustomButton
 							type="outline"
 							title="AI Logo"
-							handleClick={() => handleSubmit('logo', handleApiError)}
+							handleClick={() => handleSubmit('logo')}
 							customStyles="text-xs"
 						/>
 
 						<CustomButton
 							type="filled"
 							title="AI Full"
-							handleClick={() => handleSubmit('full', handleApiError)}
+							handleClick={() => handleSubmit('full')}
 							customStyles="text-xs"
 						/>
 					</>
@@ -44,4 +41,4 @@ const AiPicker = ({ prompt, setPrompt, generatingImg, handleSubmit }) => {
 	);
 };
 
-export default AiPicker;
+export default AIPicker;

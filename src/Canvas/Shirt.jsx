@@ -1,22 +1,34 @@
-import React from 'react';
+// Shirt.jsx
+import React, { useRef, useState } from 'react';
 import { easing } from 'maath';
 import { useSnapshot } from 'valtio';
 import { useFrame } from '@react-three/fiber';
 import { Decal, useGLTF, useTexture } from '@react-three/drei';
 import state from '../store';
+
 const Shirt = () => {
 	const snap = useSnapshot(state);
 	const { nodes, materials } = useGLTF('/shirt_baked.glb');
-
 	const logoTexture = useTexture(snap.logoDecal);
 	const fullTexture = useTexture(snap.fullDecal);
 
-	useFrame((state, delta) => easing.dampC(materials.lambert1.color, snap.color, 0.25, delta));
+	const shirtMesh = useRef();
+	const [targetRotation, setTargetRotation] = useState(6.28319); // This is approximately 2 * Math.PI, a full circle
+
+	useFrame((state, delta) => {
+		easing.dampC(materials.lambert1.color, snap.color, 0.25, delta);
+
+		if (shirtMesh.current.rotation.y < targetRotation) {
+			shirtMesh.current.rotation.y += 0.01; // Adjust the rotation speed as needed
+		}
+	});
+
 	const stateString = JSON.stringify(state);
 
 	return (
 		<group key={stateString}>
 			<mesh
+				ref={shirtMesh}
 				castShadow
 				geometry={nodes.T_Shirt_male.geometry}
 				material={materials.lambert1}

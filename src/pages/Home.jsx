@@ -6,11 +6,14 @@ import {
 	headContentAnimation,
 	headTextAnimation,
 	slideAnimation,
+	fadeAnimation,
 } from '../config/motion';
 import state from '../store';
-import { CustomButton } from '../Components';
+import { CustomButton } from '../components';
+
 const Home = () => {
 	const snap = useSnapshot(state);
+
 	return (
 		<AnimatePresence>
 			{snap.intro && (
@@ -19,16 +22,20 @@ const Home = () => {
 					{...slideAnimation('left')}>
 					<motion.header {...slideAnimation('down')}>
 						<img
-							src="./threejs.png"
+							src="./Logo.png"
 							alt="logo"
-							className="w-8 h-8 object-contain"
+							className="w-12 h-12 object-contain"
+							style={{
+								width: '100%',
+							}}
 						/>
 					</motion.header>
+
 					<motion.div
 						className="home-content"
 						{...headContainerAnimation}>
 						<motion.div {...headTextAnimation}>
-							<h1 className="head-text">
+							<h1 className="text-white-500 head-text ">
 								LET'S
 								<br className="xl:block hidden" />
 								DO IT.

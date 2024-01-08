@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSnapshot } from 'valtio';
 
@@ -51,10 +51,45 @@ const Customizer = () => {
 		}
 	};
 
-	const handleSubmit = async (type, handleError) => {
+	// const handleSubmit = async (type, handleError) => {
+	// 	if (!prompt) return alert('Please enter a prompt');
+
+	// 	try {
+	// 		const response = await fetch('http://localhost:8080/api/v1/dalle', {
+	// 			method: 'POST',
+	// 			headers: {
+	// 				'Content-Type': 'application/json',
+	// 			},
+	// 			body: JSON.stringify({
+	// 				prompt,
+	// 			}),
+	// 		});
+
+	// 		if (!response.ok) {
+	// 			throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+	// 		}
+
+	// 		const data = await response.json();
+	// 		if (data.error && data.error.code === 'billing_hard_limit_reached') {
+	// 			handleError('Billing hard limit reached. Please upgrade your plan or contact support.');
+	// 		} else {
+	// 			handleDecals(type, `data:image/png;base64,${data.photo}`);
+	// 		}
+	// 	} catch (error) {
+	// 		console.error('Fetch error:', error.message);
+	// 		handleError('Error communicating with the server');
+	// 	} finally {
+	// 		setGeneratingImg(false);
+	// 		setActiveEditorTab('');
+	// 	}
+	// };
+
+	const handleSubmit = async (type) => {
 		if (!prompt) return alert('Please enter a prompt');
 
 		try {
+			setGeneratingImg(true);
+
 			const response = await fetch('http://localhost:8080/api/v1/dalle', {
 				method: 'POST',
 				headers: {
@@ -64,7 +99,6 @@ const Customizer = () => {
 					prompt,
 				}),
 			});
-
 			if (!response.ok) {
 				throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
 			}
@@ -77,7 +111,6 @@ const Customizer = () => {
 			}
 		} catch (error) {
 			console.error('Fetch error:', error.message);
-			handleError('Error communicating with the server');
 		} finally {
 			setGeneratingImg(false);
 			setActiveEditorTab('');
@@ -94,6 +127,18 @@ const Customizer = () => {
 		}
 	};
 
+	const downloadShirt = () => {
+		const canvas = document.querySelector('canvas'); // Assuming there is only one canvas in your application
+		const shirtDataURL = canvas.toDataURL('image/png');
+
+		const link = document.createElement('a');
+		link.href = shirtDataURL;
+		link.download = 'shirt.png';
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	};
+
 	const handleActiveFilterTab = (tabName) => {
 		switch (tabName) {
 			case 'logoShirt':
@@ -102,6 +147,12 @@ const Customizer = () => {
 			case 'stylishShirt':
 				state.isFullTexture = !activeFilterTab[tabName];
 				break;
+			case 'downLoadShirt':
+				state.isDownloaded = !activeFilterTab[tabName];
+				if (!activeFilterTab[tabName]) {
+					downloadShirt();
+				}
+				break;
 			default:
 				state.isLogoTexture = true;
 				state.isFullTexture = false;
@@ -109,7 +160,6 @@ const Customizer = () => {
 		}
 
 		// after setting the state, activeFilterTab is updated
-
 		setActiveFilterTab((prevState) => {
 			return {
 				...prevState,
