@@ -9,6 +9,7 @@ import state from '../store';
 const Shirt = () => {
 	const snap = useSnapshot(state);
 	const { nodes, materials } = useGLTF('/shirt_baked.glb');
+	console.log(nodes, 'Hello');
 	const logoTexture = useTexture(snap.logoDecal);
 	const fullTexture = useTexture(snap.fullDecal);
 
@@ -19,7 +20,9 @@ const Shirt = () => {
 		easing.dampC(materials.lambert1.color, snap.color, 0.25, delta);
 
 		if (shirtMesh.current.rotation.y < targetRotation) {
-			shirtMesh.current.rotation.y += 0.01; // Adjust the rotation speed as needed
+			shirtMesh.current.rotation.y += 0.01;
+		} else {
+			setTargetRotation(0);
 		}
 	});
 

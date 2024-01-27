@@ -18,7 +18,7 @@ const Customizer = () => {
 	const [prompt, setPrompt] = useState('');
 	const [generatingImg, setGeneratingImg] = useState(false);
 
-	const [activeEditorTab, setActiveEditorTab] = useState('');
+	const [activeEditorTab, setActiveEditorTab] = useState(false);
 	const [activeFilterTab, setActiveFilterTab] = useState({
 		logoShirt: true,
 		stylishShirt: false,
@@ -127,17 +127,17 @@ const Customizer = () => {
 		}
 	};
 
-	const downloadShirt = () => {
-		const canvas = document.querySelector('canvas'); // Assuming there is only one canvas in your application
-		const shirtDataURL = canvas.toDataURL('image/png');
+	// const downloadShirt = () => {
+	// 	const canvas = document.querySelector('canvas'); // Assuming there is only one canvas in your application
+	// 	const shirtDataURL = canvas.toDataURL('image/png');
 
-		const link = document.createElement('a');
-		link.href = shirtDataURL;
-		link.download = 'shirt.png';
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
-	};
+	// 	const link = document.createElement('a');
+	// 	link.href = shirtDataURL;
+	// 	link.download = 'shirt.png';
+	// 	document.body.appendChild(link);
+	// 	link.click();
+	// 	document.body.removeChild(link);
+	// };
 
 	const handleActiveFilterTab = (tabName) => {
 		switch (tabName) {
@@ -150,7 +150,7 @@ const Customizer = () => {
 			case 'downLoadShirt':
 				state.isDownloaded = !activeFilterTab[tabName];
 				if (!activeFilterTab[tabName]) {
-					downloadShirt();
+					downloadCanvasToImage();
 				}
 				break;
 			default:

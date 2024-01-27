@@ -22,12 +22,9 @@ const Home = () => {
 					{...slideAnimation('left')}>
 					<motion.header {...slideAnimation('down')}>
 						<img
-							src="./Logo.png"
+							src="./Design.png"
 							alt="logo"
-							className="w-12 h-12 object-contain"
-							style={{
-								width: '100%',
-							}}
+							className="Logo--img w-12 h-12 object-contain"
 						/>
 					</motion.header>
 
@@ -37,7 +34,7 @@ const Home = () => {
 						<motion.div {...headTextAnimation}>
 							<h1 className="text-white-500 head-text ">
 								LET'S
-								<br className="xl:block hidden" />
+								<br />
 								DO IT.
 							</h1>
 						</motion.div>
